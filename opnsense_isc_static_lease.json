@@ -1,0 +1,11 @@
+[
+    {
+        "mac": "a1:b1:c1:d1:e1:f1",
+        "ipaddr": "10.59.11.100",
+        "hostname": "DAD-DESKTOP",
+        "descr": "DAD-DESKTOP",
+        "winsserver": null,
+        "dnsserver": null,
+        "ntpserver": null
+    }
+]

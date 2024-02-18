@@ -1,0 +1,7 @@
+          <reservation uuid="1801f931-d1c7-48f0-bbfc-e29aae72f370">
+            <subnet>4e3016b1-b603-44bd-a361-b33c44333c98</subnet>
+            <ip_address>10.59.11.100</ip_address>
+            <hw_address>a1:b1:c1:d1:e1:f1</hw_address>
+            <hostname>DAD-DESKTOP</hostname>
+            <description>DAD-DESKTOP</description>
+          </reservation>
