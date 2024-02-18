@@ -1,6 +1,6 @@
 # Python-Opn-isc-kea
 
-.xml conversion of opnsense from isc-dhcp static lease to kea-dhcp static lease.
+An .xml conversion of opnsense from isc-dhcp static lease to kea-dhcp reservation.
 
 opnsense xml -> array of [json obj] -> opnsense xml
 
