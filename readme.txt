@@ -51,10 +51,10 @@ Try the beyond compare app to see the differences
 
 Adding the kea reservation patch to the user's opnsense config file:
 In the opnsense GUI, create and add a device in the kea-dhcp 
-reservation tab and apply save.You have just created an uuid 
+reservation tab and apply save. You have just created an uuid 
 for the subnet. Save this config file. Opnsense admin: In the the *.py search 
 [ADD YOUR CONFIG] and change input_file equal to 
-your config-OPNsense.localdomain-2024*.xml
+your config-OPNsense.localdomain-2024*.xml Comment out the previous *.xml
 
 >>  python3 opnsense_isc_to_kea_reservations.py
 
