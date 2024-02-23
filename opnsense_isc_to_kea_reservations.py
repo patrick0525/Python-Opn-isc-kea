@@ -43,13 +43,14 @@ import xml.etree.ElementTree as ET
 def has_len(obj):
     return hasattr(obj, '__len__')
 
+
 # find subnet uuid from a working kea reservation in the input_file
 def find_subnet_uuid(root_name):
     first_time = False
     for item in root_name.findall('.//subnet'):
     
         # Testing for missing uuid - test False condition only
-        if ( (has_len(item.text)) == False):
+        if ((has_len(item.text)) == False):
             print("WTF! Missing a valid kea subnet uuid. \nCheck config-OPNsense.localdomain-2024*.xml\n")
             item.text = "YOU NEED TO CREATE A VALID KEA RESERVATION"
             return item.text
@@ -73,8 +74,8 @@ def find_subnet_uuid(root_name):
 #                       <description>DAD-DESKTOP</description>
 #                   </reservation>
 
-def json_to_opnsense_xml(path,input,output):
-    
+
+def json_to_opnsense_xml(path,input,output):  
     file = os.path.join(path,input)
     input_file = open(file, 'r')
 
@@ -144,7 +145,6 @@ def json_to_opnsense_xml(path,input,output):
 #    }
 #]
 def opnsense_xml_to_json(path,input,output):
-
     # open the input xml file and read
     # data into a python dictionary 
     # using xmltodict module
@@ -207,7 +207,7 @@ def opnsense_xml_to_json(path,input,output):
     print("\njson saved to", output_file,"\n")
 
 
-# Merge the original xml with the kea reservationabtion xml
+# Merge the original xml with the kea reservation xml
 def merge_files(entry_pathpath, input_file, kea_output_file, merge_file):
     print("Start -> Merge the xml files together")
     #print("doc1_file\n")
