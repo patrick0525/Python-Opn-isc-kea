@@ -232,19 +232,19 @@ def merge_files(entry_pathpath, input_file, kea_output_file, merge_file):
     file3_path = os.path.join(entry_path,doc3_file)
     #print(file3_path)
 
-    # Insert the one reservation from doc2_file into the doc1_file
+    # Loop and insert each reservation from doc2_file into the doc1_file
     for item in root2.findall('reservation'):
         #print("found",item)
     
-        # goto 1st doc1_file xml and find insertion field <reservations>
-        #  and loop through doc2_file by inserting each reservation
+        # goto 1st doc1_file xml and find the start of the insertion field <reservations>
+        # and loop through doc2_file (item) by inserting each reservation
         target = root1.find('.//reservations')    
         target.insert(0,item)
     
-    # make xml pretty using correct idention    
+    # make xml pretty and correct the idention    
     ET.indent(tree1, space="\t", level=0)
 
-    # Save the merged xml file
+    # Write the merged xml file
     tree1.write(file3_path, xml_declaration=True, encoding='utf-8', method="xml")
 
     print("\nDone...the merged changes are in ",file3_path,"\n")
