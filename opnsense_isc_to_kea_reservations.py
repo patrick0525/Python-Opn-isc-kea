@@ -38,24 +38,34 @@ import sys
 import xmltodict
 import xml.etree.ElementTree as ET
 #import lxml.etree as etree
-
-# checking subnet uuid len and does it exists 
+import re 
+ 
+# checking subnet uuid len and veridy if it is empty 
 def has_len(obj):
     return hasattr(obj, '__len__')
-
+    
+    
+# Need to validate whether the value is a uuid or a subnet IP address
+# using a rgex pattern match. Check for IP address pattern [xxx.xxx.xxx.xxx\xx]
+def validate_uuid_rgex(uuid):
+    #print(":::: ", uuid)
+    pattern = r"[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\/[0-9]{1,2}"
+    match = re.match(pattern,uuid)
+    if bool(match):
+        print("---> Missing the inital kea reservation only subnet IP is posted:", uuid)
+        return False
 
 # find subnet uuid from a working kea reservation in the input_file
 def find_subnet_uuid(root_name):
     first_time = False
-    for item in root_name.findall('.//subnet'):
-    
+    for item in root_name.findall('.//subnet'): 
         # Testing for missing uuid - test False condition only
         if ((has_len(item.text)) == False):
-            print("WTF! Missing a valid kea subnet uuid. \nCheck config-OPNsense.localdomain-2024*.xml\n")
+            print("WTF! Missing uuid value [Empty]. \nCheck config-OPNsense.localdomain-2024*.xml\n")
             item.text = "YOU NEED TO CREATE A VALID KEA RESERVATION"
             return item.text
             
-        # uusi must char len =36
+        # uuid shall have len= 36
         if ((len(item.text) == 36) and (first_time == False)):
             print("Call find_subnet_uuid(): ", item.text)
             first_time = True
@@ -90,13 +100,15 @@ def json_to_opnsense_xml(path,input,output):
         reservation.set('uuid',str(uuid.uuid4()))
     
         # get subnet uuid from the 1st kea reservation       
-        temp = find_subnet_uuid(root1)
-        print("---->", temp)
-        if ((len(temp) < 36)):
+        subnet_uuid = find_subnet_uuid(root1)
+        uuid_validity = validate_uuid_rgex(subnet_uuid) 
+        
+        if (uuid_validity == False):
            print("WTF! Missing a valid kea subnet uuid. \nCheck config-OPNsense.localdomain-2024*.xml\n")
            ET.SubElement(reservation,"subnet").text = "YOU NEED TO CREATE A VALID KEA RESERVATION"
         else:
-           # Valid subnet uuid len and format
+           # Valid subnet uuid value
+           print("--->", subnet_uuid)
            ET.SubElement(reservation,"subnet").text = find_subnet_uuid(root1)
                      
         # get info from json file
