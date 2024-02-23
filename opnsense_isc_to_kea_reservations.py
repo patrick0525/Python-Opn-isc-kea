@@ -39,7 +39,7 @@ import xmltodict
 import xml.etree.ElementTree as ET
 #import lxml.etree as etree
 
-# checking subnet uuid len and does it exist 
+# checking subnet uuid len and does it exists 
 def has_len(obj):
     return hasattr(obj, '__len__')
 
@@ -48,7 +48,7 @@ def find_subnet_uuid(root_name):
     first_time = False
     for item in root_name.findall('.//subnet'):
     
-        # Testing for missing uuid - False condition only
+        # Testing for missing uuid - test False condition only
         if ( (has_len(item.text)) == False):
             print("WTF! Missing a valid kea subnet uuid. \nCheck config-OPNsense.localdomain-2024*.xml\n")
             item.text = "YOU NEED TO CREATE A VALID KEA RESERVATION"
@@ -66,12 +66,12 @@ def find_subnet_uuid(root_name):
 #
 # a kea reservation xml
 #                   <reservation uuid="bd774270-c81d-468f-a0a4-26bba4d150d3">
-#						<subnet>b2d692fb-fd9d-4bf7-84b7-eac29cca1692</subnet>
-#						<ip_address>10.59.11.101</ip_address>
-#						<hw_address>a1:b1:c1:d1:e1:f1</hw_address>
-#						<hostname>DAD-DESKTOP</hostname>
-#						<description>DAD-DESKTOP</description>
-#					</reservation>
+#                       <subnet>b2d692fb-fd9d-4bf7-84b7-eac29cca1692</subnet>
+#                       <ip_address>10.59.11.101</ip_address>
+#                       <hw_address>a1:b1:c1:d1:e1:f1</hw_address>
+#                       <hostname>DAD-DESKTOP</hostname>
+#                       <description>DAD-DESKTOP</description>
+#                   </reservation>
 
 def json_to_opnsense_xml(path,input,output):
     
@@ -95,10 +95,9 @@ def json_to_opnsense_xml(path,input,output):
            print("WTF! Missing a valid kea subnet uuid. \nCheck config-OPNsense.localdomain-2024*.xml\n")
            ET.SubElement(reservation,"subnet").text = "YOU NEED TO CREATE A VALID KEA RESERVATION"
         else:
-           # Valid char len 36 subnet uuid, value and format
+           # Valid subnet uuid len and format
            ET.SubElement(reservation,"subnet").text = find_subnet_uuid(root1)
-            
-            
+                     
         # get info from json file
         ET.SubElement(reservation,"ip_address").text = str(item["ipaddr"])
         ET.SubElement(reservation,"hw_address").text = str(item["mac"])
@@ -262,15 +261,16 @@ entry_path = (os.getcwd())
 # Read opnsense cong file:  config-OPNsense*.xml
 # Creates a isc-dhcpd static lease json file
 #
-#===================   [ADD YOUR CONFIG] SEE BELOW   ================================
+#===================   [ADD YOUR CONFIG]     ================================
 #   NOTE: Each xml shall have one kea reservation
 # one static release
 #input_file  = "config-OPNsense.localdomain-20240218000000.xml"
 #
 # multiple static releases
 input_file  = "config-OPNsense.localdomain-20240218111111.xml"
-# input_file  = "[ADD YOUR CONFIG].xml"
-#======================================================================
+#input_file  = "[ADD YOUR CONFIG].xml"
+#
+#===================   [ADD YOUR CONFIG]     ================================
 #
 output_file = "opnsense_isc_static_lease.json"
 print("Call opnsense_xml_to_json() \n[Path]                             Input File                  Output file")
