@@ -1,9 +1,36 @@
 [
     {
         "mac": "a1:b1:c1:d1:e1:f1",
-        "ipaddr": "10.59.11.100",
+        "ipaddr": "10.59.11.101",
         "hostname": "DAD-DESKTOP",
         "descr": "DAD-DESKTOP",
+        "winsserver": null,
+        "dnsserver": null,
+        "ntpserver": null
+    },
+    {
+        "mac": "a2:b2:c2:d2:e2:f2",
+        "ipaddr": "10.59.11.102",
+        "hostname": "MOM-DESKTOP",
+        "descr": "MOM-DESKTOP",
+        "winsserver": null,
+        "dnsserver": null,
+        "ntpserver": null
+    },
+    {
+        "mac": "a3:b3:c3:d3:e3:f3",
+        "ipaddr": "10.59.11.103",
+        "hostname": "Wendy-DESKTOP",
+        "descr": "Wendy-DESKTOP",
+        "winsserver": null,
+        "dnsserver": null,
+        "ntpserver": null
+    },
+    {
+        "mac": "a4:b4:c4:d4:e4:f4",
+        "ipaddr": "10.59.11.104",
+        "hostname": null,
+        "descr": null,
         "winsserver": null,
         "dnsserver": null,
         "ntpserver": null
