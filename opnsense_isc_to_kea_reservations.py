@@ -83,15 +83,14 @@ def find_subnet_uuid(root_name):
 #                       <hostname>DAD-DESKTOP</hostname>
 #                       <description>DAD-DESKTOP</description>
 #                   </reservation>
-
-
 def json_to_opnsense_xml(path,input,output):  
     file = os.path.join(path,input)
     input_file = open(file, 'r')
 
     # loads only a json array
     json_decode = json.load(input_file)
-      
+    
+    # start xml tree 
     r = ET.Element("reservations")
     for item in json_decode:
         
@@ -116,7 +115,8 @@ def json_to_opnsense_xml(path,input,output):
         ET.SubElement(reservation,"hw_address").text = str(item["mac"])
         ET.SubElement(reservation,"hostname").text = str(item["hostname"])
         ET.SubElement(reservation,"description").text = str(item["descr"])
-
+        
+        # construct tree object       
         kea_xml = ET.ElementTree(r)
         kea_xml.write(output)
 
@@ -170,12 +170,21 @@ def opnsense_xml_to_json(path,input,output):
     isExist = os.path.exists(input_file)
     print ("The input file exists:", isExist)
 
+    # Validate whether input_file is an config-OPNsense*.xml file
+    tree0 = ET.parse(input_file)
+    root1= tree0.getroot()
+    if (root1.tag == "opnsense"):
+        print("This is a config-OPNsense*.xmlfile. The tag is ","<",root1.tag,">","\n")
+    else:
+        print("This is NOT a config-OPNsense*.xmlfile\n")
+
+
     with open (input_file) as xml_file:
         data_dict = xmltodict.parse(xml_file.read())	
     # Clean-up the nested array 
     # and get to the dhcpd value
     long_list = (list(data_dict.values()))
-    # print(long_list)
+    #print(long_list)
     # print("\n")
 
     # get to staticmap
@@ -208,7 +217,6 @@ def opnsense_xml_to_json(path,input,output):
     print("Print json file. \n", json_str)
     
     # Specify the path to the output file 
-    #output_file = rf'C:\Users\patri\Documents\python\GitHub4\opnsense_isc_static_lease.json'
     output_file = os.path.join(path, output)
     # Save the json representation of the structure 
     with open(output_file, 'w') as f: 
@@ -276,7 +284,7 @@ entry_path = (os.getcwd())
 #===================   [ADD YOUR CONFIG]     ================================
 #   NOTE: Each xml shall have one kea reservation
 # one static release
-#input_file  = "config-OPNsense.localdomain-20240218000000.xml"
+#input_file  = "config-OPNsense.localdomain-20240218000000c.xml"
 #
 # multiple static releases
 input_file  = "config-OPNsense.localdomain-20240218111111.xml"
