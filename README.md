@@ -1,14 +1,40 @@
 # Python-Opn-isc-kea (opnsense_isc_to_kea_reservations.py)
 
-An xml conversion/migration of opnsense from isc-dhcp static lease to kea-dhcp reservation.
+A xml migration of isc-dhcp static leases to kea-dhcp reservations.
 
-Reads the config-OPNsense*.xml file into
-opnsense xml -> array of [json obj] -> opnsense xml
+Reads the config-OPNsense*.xml file into a 
+isc xml -> into an array of [json obj] -> kea xml
+-> merged back to config-OPNsense*.xml -> saved as merge.xml
 
-opnsense kea-dhcp xml -adds new random uuid per device and re-uses users' subnet uuid
+Requires: System Configuration Restore of merge.xml.
 
-The output is merge.xml
+Updates:
+Inital commit
+    Migrate existing isc static lease data into kea reservations
+    Create a new random uuid per kea reservation
+    Re-uses subnet uuid for all reservations
 
-Restore merge.xml and reboot
+02232024
+    Validate opnsense file using <opnsense> xml
+    Validate existence of inital kea reservation
+    Validate if reservation's uuid value exist
+    For invalid uuid use cases, the merge.xml
+    contains a <uuid> warning "YOU NEED TO CREATE 
+    A VALID KEA RESERVATION"
 
-Done
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
