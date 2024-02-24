@@ -21,6 +21,10 @@ Inital commit
     For invalid uuid use cases, the merge.xml
     contains a <uuid> warning "YOU NEED TO CREATE 
     A VALID KEA RESERVATION"
+    
+02242024
+    Terminates opnsense_isc_to_kea_reservations.py
+    if <opnsense> tag is missing
 
      
 
