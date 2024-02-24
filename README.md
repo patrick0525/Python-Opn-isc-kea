@@ -5,9 +5,9 @@ A xml migration of isc-dhcp static leases to kea-dhcp reservations.
 Reads the config-OPNsense*.xml file into a 
 isc xml -> array of [json obj] -> kea xml
 
-The output is a merge.xml
+The output is a merge.xml that re-loads and re-boots opnsense.
 
-Update:
+Updates:
 Inital commit
     Migrate existing isc data into kea reservations
     Create new random uuid per reservation
