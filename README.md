@@ -11,10 +11,10 @@ Requires: System Configuration Restore of merge.xml.
 
 Updates:
 
-02172024 (Inital commit) 
+02172024 (inital commit) 
     - Migrate existing isc static lease data into kea reservations
-    - Create a new random uuid per kea reservation
-    - Re-uses subnet uuid for all reservations
+    - Create a new random \<reservation uuid> per kea reservation
+    - Re-uses subnet \<uuid> for all reservations
 
 02232024
     - Validate opnsense file using \<opnsense> tag
