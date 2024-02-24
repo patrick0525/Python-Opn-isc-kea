@@ -19,14 +19,14 @@ Updates:
 02232024
     - Validate opnsense file using \<opnsense> tag
     - Validate existence of inital kea \<reservation> tag
-    - Validate if reservation's uuid value exist
+    - Validate if reservation's uuid.text value exist
     - For invalid uuid use cases, the merge.xml
-    contains a <uuid> warning "YOU NEED TO CREATE 
+    contains a \<uuid> warning "YOU NEED TO CREATE 
     A VALID KEA RESERVATION"
     
 02242024
     - Terminates opnsense_isc_to_kea_reservations.py
-    if <opnsense> tag is missing
+    if \<opnsense> tag is missing
 
      
 
