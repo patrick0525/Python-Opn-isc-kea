@@ -5,7 +5,7 @@ A xml migration of isc-dhcp static leases to kea-dhcp reservations.
 Reads the config-OPNsense*.xml file -> into an
 isc xml -> into an array of [json obj] -> into a kea xml
 -> merges back to config-OPNsense*.xml -> saved as merge.xml
-Original config-OPNsense*.xml remains unmodified.
+ (Original config-OPNsense*.xml remains unmodified)
 
 Requires: System Configuration Restore of merge.xml.
 
