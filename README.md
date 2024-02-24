@@ -14,11 +14,12 @@ Inital commit
     Re-use subnet uuid for additional reservations
 
 02232024
-    Validate opnsense xml tag
+    Validate opnsense xml tag as an opnsense file
     Validate existence of inital kea reservation
     Validate if reservation's uuid value exist
     For invalid uuid use cases. Create a merge.xml
-    that contain warning data.
+    that contains <uuid> warning data.
+
      
 
 
