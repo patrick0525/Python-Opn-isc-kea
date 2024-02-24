@@ -800,28 +800,28 @@
 					</subnet4>
 				</subnets>
 				<reservations>
-					<reservation uuid="f5882762-ce8f-43f1-8921-78133c3690a0">
+					<reservation uuid="de9655f1-3f0c-4675-a69b-588afdc2a39a">
 						<subnet>b2d692fb-fd9d-4bf7-84b7-eac29cca1692</subnet>
 						<ip_address>10.59.11.104</ip_address>
 						<hw_address>a4:b4:c4:d4:e4:f4</hw_address>
 						<hostname>None</hostname>
 						<description>None</description>
 					</reservation>
-					<reservation uuid="1cbf91ab-0ad7-4704-a5f6-9833bf1626a3">
+					<reservation uuid="43a486bf-0cea-4f4e-89ca-7171c2f610eb">
 						<subnet>b2d692fb-fd9d-4bf7-84b7-eac29cca1692</subnet>
 						<ip_address>10.59.11.103</ip_address>
 						<hw_address>a3:b3:c3:d3:e3:f3</hw_address>
 						<hostname>Wendy-DESKTOP</hostname>
 						<description>Wendy-DESKTOP</description>
 					</reservation>
-					<reservation uuid="1c09e634-3ea6-445a-8f51-d5984ec59939">
+					<reservation uuid="75baadd6-dd80-4db7-b043-4a0bfd0aadde">
 						<subnet>b2d692fb-fd9d-4bf7-84b7-eac29cca1692</subnet>
 						<ip_address>10.59.11.102</ip_address>
 						<hw_address>a2:b2:c2:d2:e2:f2</hw_address>
 						<hostname>MOM-DESKTOP</hostname>
 						<description>MOM-DESKTOP</description>
 					</reservation>
-					<reservation uuid="5efa41c3-7a4e-4b11-af45-a43ed51348b7">
+					<reservation uuid="7c9e1eb8-9d1b-48f9-bf78-7c1378728992">
 						<subnet>b2d692fb-fd9d-4bf7-84b7-eac29cca1692</subnet>
 						<ip_address>10.59.11.101</ip_address>
 						<hw_address>a1:b1:c1:d1:e1:f1</hw_address>
