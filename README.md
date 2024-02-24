@@ -3,22 +3,24 @@
 A xml migration of isc-dhcp static leases to kea-dhcp reservations.
 
 Reads the config-OPNsense*.xml file into a 
-isc xml -> array of [json obj] -> kea xml
+isc xml -> into an array of [json obj] -> kea xml
+-> merged back to config-OPNsense*.xml -> saved as merge.xml
 
-The output is a merge.xml that re-loads and re-boots opnsense.
+Requires: System Configuration Restore of merge.xml.
 
 Updates:
 Inital commit
-    Migrate existing isc data into kea reservations
-    Create new random uuid per reservation
-    Re-use subnet uuid for additional reservations
+    Migrate existing isc static lease data into kea reservations
+    Create a new random uuid per kea reservation
+    Re-uses subnet uuid for all reservations
 
 02232024
-    Validate opnsense xml tag as an opnsense file
+    Validate opnsense file using <opnsense> xml
     Validate existence of inital kea reservation
     Validate if reservation's uuid value exist
-    For invalid uuid use cases. Create a merge.xml
-    that contains <uuid> warning data.
+    For invalid uuid use cases, the merge.xml
+    contains a <uuid> warning "YOU NEED TO CREATE 
+    A VALID KEA RESERVATION"
 
      
 
