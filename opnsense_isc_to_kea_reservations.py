@@ -52,7 +52,7 @@ def validate_uuid_rgex(uuid):
     pattern = r"[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\/[0-9]{1,2}"
     match = re.match(pattern,uuid)
     if bool(match):
-        print("---> Missing the inital kea reservation only subnet IP is posted:", uuid)
+        print("---> Missing the inital kea reservation only the subnet IP is posted:", uuid)
         return False
 
 # find subnet uuid from a working kea reservation in the input_file
@@ -177,7 +177,7 @@ def opnsense_xml_to_json(path,input,output):
         print("This is a config-OPNsense*.xmlfile. The tag is ","<",root1.tag,">","\n")
         print("Starting: ", python_script_name,"\n\n")
     else:
-        print("This is NOT a config-OPNsense*.xmlfile\n")
+        print("This is NOT a config-OPNsense*.xmlfile. Missing <opnsense> tag \n")
         print("Terminating: ", python_script_name,"\n\n")
         sys.exit()
 
@@ -274,7 +274,8 @@ def merge_files(entry_pathpath, input_file, kea_output_file, merge_file):
 
 ########################  Main  ########################
 
-python_script_name ="opnsense_isc_to_kea_reservations.py"
+# python script name
+python_script_name = "opnsense_isc_to_kea_reservations.py"
 
 # Change working path to where the *.py is executing from
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0])) 
