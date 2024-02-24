@@ -175,9 +175,11 @@ def opnsense_xml_to_json(path,input,output):
     root1= tree0.getroot()
     if (root1.tag == "opnsense"):
         print("This is a config-OPNsense*.xmlfile. The tag is ","<",root1.tag,">","\n")
+        print("Starting: ", python_script_name,"\n\n")
     else:
         print("This is NOT a config-OPNsense*.xmlfile\n")
-
+        print("Terminating: ", python_script_name,"\n\n")
+        sys.exit()
 
     with open (input_file) as xml_file:
         data_dict = xmltodict.parse(xml_file.read())	
@@ -272,9 +274,11 @@ def merge_files(entry_pathpath, input_file, kea_output_file, merge_file):
 
 ########################  Main  ########################
 
+python_script_name ="opnsense_isc_to_kea_reservations.py"
+
 # Change working path to where the *.py is executing from
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0])) 
-print("The working path:", script_directory)
+print(python_script_name,"working path: ", script_directory)
 os.chdir(script_directory)
 entry_path = (os.getcwd())
 
@@ -284,7 +288,7 @@ entry_path = (os.getcwd())
 #===================   [ADD YOUR CONFIG]     ================================
 #   NOTE: Each xml shall have one kea reservation
 # one static release
-#input_file  = "config-OPNsense.localdomain-20240218000000c.xml"
+#input_file  = "config-OPNsense.localdomain-20240218000000.xml"
 #
 # multiple static releases
 input_file  = "config-OPNsense.localdomain-20240218111111.xml"
