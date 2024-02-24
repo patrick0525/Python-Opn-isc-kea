@@ -18,7 +18,7 @@ Updates:
 
 02232024
     - Validate opnsense file using \<opnsense> tag
-    - Validate existence of inital kea <reservation> tag
+    - Validate existence of inital kea \<reservation> tag
     - Validate if reservation's uuid value exist
     - For invalid uuid use cases, the merge.xml
     contains a <uuid> warning "YOU NEED TO CREATE 
