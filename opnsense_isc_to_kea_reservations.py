@@ -237,34 +237,31 @@ def opnsense_xml_to_json(path,input,output):
 # merge the original xml with the kea reservation xml
 def merge_files(entry_pathpath, input_file, kea_output_file, merge_file):
     print("Start -> Merge the xml files together")
-    #print("doc1_file\n")
     #input_file = "config-OPNsense.localdomain-20240218111111.xml"
     # read config-OPNsense*.xml
-    file1_path = os.path.join(entry_path, input_file)
-    tree1 = ET.parse(file1_path)
+    orig_config_file_path = os.path.join(entry_path, input_file)
+    tree1 = ET.parse(orig_config_file_path)
     root1= tree1.getroot()
-    print(file1_path)
+    print(orig_config_file_path)
 
     # read kea reservations xml
-    #print("doc2_file\n")
     #kea_output_file = "opnsense_isc_static_lease_converted_to_kea_reservations.xml"
-    file2_path = os.path.join(entry_path,kea_output_file)
-    tree2 = ET.parse(file2_path)
+    kea_file_path = os.path.join(entry_path,kea_output_file)
+    tree2 = ET.parse(kea_file_path)
     root2 = tree2.getroot()
-    print(file2_path)
+   
+    # merge file: merge.xml
+    # location merge.xml
+    merge_file_path = os.path.join(entry_path,merge_file)
+    
 
-    # merge file name is doc3_file
-    #print("doc3_file\n")
-    doc3_file = merge_file
-    file3_path = os.path.join(entry_path,doc3_file)
-    #print(file3_path)
-
-    # loop and insert each reservation from doc2_file into the doc1_file
+    # loop and insert each reservation from kea_output_file 
+    # into the orig_config_file
     for item in root2.findall('reservation'):
         #print("found",item)
     
-        # goto 1st doc1_file xml and find the start of the insertion field <reservations>
-        # and loop through doc2_file (item) by inserting each reservation
+        # goto 1st orig_config_file xml and find the start of the insertion field <reservations>
+        # and loop through kea_output_file (item) by inserting each reservation
         target = root1.find('.//reservations')    
         target.insert(0,item)
     
@@ -272,9 +269,9 @@ def merge_files(entry_pathpath, input_file, kea_output_file, merge_file):
     ET.indent(tree1, space = "\t", level=0)
 
     # write the merged xml file
-    tree1.write(file3_path, xml_declaration=True, encoding='utf-8', method="xml")
+    tree1.write(merge_file_path, xml_declaration=True, encoding='utf-8', method="xml")
 
-    print("\nDone...the merged changes are in ",file3_path,"\n")
+    print("\nDone...the merged changes are in ",merge_file_path,"\n")
 
 
 ##################################   Main  ##################################
@@ -320,9 +317,9 @@ kea_output_file = "opnsense_isc_static_lease_converted_to_kea_reservations.xml"
 print("Call json_to_opnsense_xml() \n[Path]                              Input File                  Output file")
 print(entry_path, kea_input_file, kea_output_file,"\n\n")
 
-#doc1_file = "config-OPNsense.localdomain-20240218111111.xml"
-file1_path = os.path.join(entry_path, input_file) #doc1_file)
-tree1 = ET.parse(file1_path)
+#orig_config_file = "config-OPNsense.localdomain-20240218111111.xml"
+orig_config_file_path = os.path.join(entry_path, input_file)
+tree1 = ET.parse(orig_config_file_path)
 root1= tree1.getroot()
 
 #print("Found......",find_subnet_uuid(root1))
