@@ -233,13 +233,14 @@ def opnsense_xml_to_json(path,input,output):
     #print(long_list)
     #print("\n")
 
-    # get to static lease map
+    # get to <staticmap>
     short_list = long_list[0]
     #print("The...",short_list)
     #print("\n\n")
 
     
-    # get to static lease map(key): json objects (values)
+    # get to <staticmap>(key) find the key and insert the value 
+    # into a json object
     # need at least one isc dhcpd static leases in the xml    
     inner_list = short_list['dhcpd']['lan']['staticmap']
     #print("\n")
