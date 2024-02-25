@@ -216,7 +216,7 @@ def opnsense_xml_to_json(path,input,output):
     tree0 = ET.parse(input_file)
     root1= tree0.getroot()
     if (root1.tag == "opnsense"):
-        print("This is a config-OPNsense*.xmlfile. The tag is ","<",root1.tag,">","\n")
+        print("This is a config-OPNsense*.xmlfile with the correct tag ","<",root1.tag,">","\n")
         print("Starting: ", python_script_name,"\n\n")
     else:
         # terminate if not a config-OPNsense*.xmlfile.xml
@@ -349,7 +349,7 @@ input_file  = "config-OPNsense.localdomain-20240218111111.xml"
 #
 # Supported:
 # opnsense_isc_to_kea_reservations.py 
-# opnsense_isc_to_kea_reservations.py [config-OPNsense*.xml
+# opnsense_isc_to_kea_reservations.py [config-OPNsense*.xml]
 #
 #
 # Not Supported:
@@ -402,5 +402,4 @@ merge_xml = "merge.xml"
 # call procedure
 print("Call merge_files()\n")
 merge_files(entry_path, orig_xml, kea_xml, merge_xml)
-    
-    
+       
