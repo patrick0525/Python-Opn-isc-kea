@@ -21,7 +21,7 @@ Updates:
    - Validate existence of inital kea \<reservation uuid> tag
    - Validate if reservation's uuid.text value exists
    - For invalid uuid use cases, the merge.xml
-    contains a \<uuid> warning "YOU NEED TO CREATE 
+     forces an insertion text a \<uuid> warning "YOU NEED TO CREATE 
     A VALID KEA RESERVATION"
     
 02242024
