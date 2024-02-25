@@ -13,14 +13,14 @@ Updates:
 
 02172024 (inital commit)
    - Migrate existing isc static lease data into kea reservations
-    - Create a new random \<reservation uuid> per kea reservation
-    - Reuses existing kea subnet \<uuid> for all reservations: \<reservation uuid>
+   - Create a new random \<reservation uuid> per kea reservation
+   - Reuses existing kea subnet \<uuid> for all reservations: \<reservation uuid>
 
 02232024
    - Validate opnsense file using \<opnsense> tag
-    - Validate existence of inital kea \<reservation uuid> tag
-    - Validate if reservation's uuid.text value exists
-    - For invalid uuid use cases, the merge.xml
+   - Validate existence of inital kea \<reservation uuid> tag
+   - Validate if reservation's uuid.text value exists
+   - For invalid uuid use cases, the merge.xml
     contains a \<uuid> warning "YOU NEED TO CREATE 
     A VALID KEA RESERVATION"
     
