@@ -21,8 +21,7 @@ Updates:
    - Validate existence of inital kea \<reservation uuid> tag
    - Validate if reservation's uuid.text value exists
    - For invalid uuid use cases, the merge.xml
-     forces an insertion text a \<uuid> warning "YOU NEED TO CREATE 
-    A VALID KEA RESERVATION"
+     has a forced insertion warning text a \<uuid>  "YOU NEED TO CREATE A VALID KEA RESERVATION"
     
 02242024
    - Terminates opnsense_isc_to_kea_reservations.py
