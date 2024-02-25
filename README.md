@@ -17,7 +17,7 @@ Updates:
     - Reuses existing kea subnet \<uuid> for all reservations: \<reservation uuid>
 
 02232024
-    - Validate opnsense file using \<opnsense> tag
+   - Validate opnsense file using \<opnsense> tag
     - Validate existence of inital kea \<reservation uuid> tag
     - Validate if reservation's uuid.text value exists
     - For invalid uuid use cases, the merge.xml
@@ -25,7 +25,7 @@ Updates:
     A VALID KEA RESERVATION"
     
 02242024
-    - Terminates opnsense_isc_to_kea_reservations.py
+   - Terminates opnsense_isc_to_kea_reservations.py
     if \<opnsense> tag is missing
 
 02252024
