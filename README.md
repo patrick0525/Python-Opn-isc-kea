@@ -28,6 +28,11 @@ Updates:
     - Terminates opnsense_isc_to_kea_reservations.py
     if \<opnsense> tag is missing
 
+02252024
+   - Command line argument support and file name regex format matching
+
+     opnsense_isc_to_kea_reservations.py [config-OPNsense*.xml]
+
      
 
 
