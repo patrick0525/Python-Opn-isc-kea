@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##############################################################################
-
-
+#
 # opnsense_isc_to_kea_reservations.py
 #
 # opnsense admin: copy opnsense_isc_to_kea_reservations.py and the two input_file
@@ -40,38 +39,39 @@ import xml.etree.ElementTree as ET
 #import lxml.etree as etree
 import re 
  
-# checking subnet uuid len and veridy if it is empty 
+# checking subnet uuid for zero length which returns False
 def has_len(obj):
     return hasattr(obj, '__len__')
     
     
-# Need to validate whether the value is a uuid or a subnet IP address
+# need to validate whether the value is a uuid or a subnet IP address
 # using a rgex pattern match. Check for IP address pattern [xxx.xxx.xxx.xxx\xx]
 def validate_uuid_rgex(uuid):
     #print(":::: ", uuid)
     pattern = r"[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\/[0-9]{1,2}"
     match = re.match(pattern,uuid)
     if bool(match):
-        print("---> Missing the inital kea reservation only the subnet IP is posted:", uuid)
+        print("---> Missing valid inital kea reservation only has the subnet IP:", uuid)
         return False
 
 # find subnet uuid from a working kea reservation in the input_file
 def find_subnet_uuid(root_name):
     first_time = False
+    correct_uuid_length = 36
     for item in root_name.findall('.//subnet'): 
-        # Testing for missing uuid - test False condition only
+        # test for missing text <uuid> <\uuid> (testing False condition only)
         if ((has_len(item.text)) == False):
             print("WTF! Missing uuid value [Empty]. \nCheck config-OPNsense.localdomain-2024*.xml\n")
             item.text = "YOU NEED TO CREATE A VALID KEA RESERVATION"
             return item.text
             
-        # uuid shall have len= 36
-        if ((len(item.text) == 36) and (first_time == False)):
+        # uuid shall have correct uuid length
+        if ((len(item.text) == correct_uuid_length) and (first_time == False)):
             print("Call find_subnet_uuid(): ", item.text)
             first_time = True
     return (item.text)    
 
-# Convert json array of objects to a kea xml
+# convert json array of objects to a kea xml
 # Input     opnsense_isc_static_lease.json
 # Output opnsense_isc_static_lease_converted_to_kea_reservations.xml
 #
@@ -102,45 +102,46 @@ def json_to_opnsense_xml(path,input,output):
         subnet_uuid = find_subnet_uuid(root1)
         uuid_validity = validate_uuid_rgex(subnet_uuid) 
         
+        # an IP address is an invalid subnet uuid value
         if (uuid_validity == False):
            print("WTF! Missing a valid kea subnet uuid. \nCheck config-OPNsense.localdomain-2024*.xml\n")
-           ET.SubElement(reservation,"subnet").text = "YOU NEED TO CREATE A VALID KEA RESERVATION"
+           ET.SubElement(reservation,"subnet").text   = "YOU NEED TO CREATE A VALID KEA RESERVATION"
         else:
-           # Valid subnet uuid value
+           # valid subnet uuid value
            print("--->", subnet_uuid)
-           ET.SubElement(reservation,"subnet").text = find_subnet_uuid(root1)
+           ET.SubElement(reservation,"subnet").text   = find_subnet_uuid(root1)
                      
-        # get info from json file
-        ET.SubElement(reservation,"ip_address").text = str(item["ipaddr"])
-        ET.SubElement(reservation,"hw_address").text = str(item["mac"])
-        ET.SubElement(reservation,"hostname").text = str(item["hostname"])
+        # get info from json file and populate xml tree
+        ET.SubElement(reservation,"ip_address").text  = str(item["ipaddr"])
+        ET.SubElement(reservation,"hw_address").text  = str(item["mac"])
+        ET.SubElement(reservation,"hostname").text    = str(item["hostname"])
         ET.SubElement(reservation,"description").text = str(item["descr"])
         
         # construct tree object       
         kea_xml = ET.ElementTree(r)
         kea_xml.write(output)
 
-    # Make 'Pretty' xml  
+    # make 'pretty' xml  
     tree = ET.parse(output)
     root = tree.getroot()
-    ET.indent(tree, space="\t", level=0)
+    ET.indent(tree, space = "\t", level=0)
     print("\n", ET.tostring(root, encoding='utf8').decode('utf8'))
 
-    # Save the pretty xml file 
+    # save as a pretty xml file 
     tree.write(output, xml_declaration=True, encoding='utf-8', method="xml")
 
-    # Checking if the data is written to file or not
+    # checking if the xml data is written to file or not
     output_file = os.path.join(path,output)
     read_output_file = open(output_file, 'r')
     print("\nchecking populated kea file for added reservations: \n")
     print(read_output_file.read())
     read_output_file.close()
 
-    # Print a confirmation message with the output file path
+    #print a confirmation message with the output file path
     print("\nopnsense kea-dhcpd xml saved to",output_file,"\n\n")
 
 
-# Convert config-OPNsense*.xml to json array of objects
+# convert config-OPNsense*.xml to json array of objects
 # Input  config-OPNsense*.xml
 # Output opnsense_isc_static_lease.json
 #
@@ -158,7 +159,7 @@ def json_to_opnsense_xml(path,input,output):
 #]
 def opnsense_xml_to_json(path,input,output):
     # open the input xml file and read
-    # data into a python dictionary 
+    # xml data into a python dictionary 
     # using xmltodict module
 
     input_file = os.path.join(path,input)
@@ -166,70 +167,73 @@ def opnsense_xml_to_json(path,input,output):
     print("Output needs to be a single json array containing json objects")
     print("Format: [{object1},{object2},{object3}]")
 
-    # Does the file exist
+    # does the file exists
     isExist = os.path.exists(input_file)
     print ("The input file exists:", isExist)
 
-    # Validate whether input_file is an config-OPNsense*.xml file
+    # validate whether input_file is an config-OPNsense*.xml file
+    # check the <opnsense> tag
     tree0 = ET.parse(input_file)
     root1= tree0.getroot()
     if (root1.tag == "opnsense"):
         print("This is a config-OPNsense*.xmlfile. The tag is ","<",root1.tag,">","\n")
         print("Starting: ", python_script_name,"\n\n")
     else:
+        # terminate if not a config-OPNsense*.xmlfile.xml
         print("This is NOT a config-OPNsense*.xmlfile. Missing <opnsense> tag \n")
         print("Terminating: ", python_script_name,"\n\n")
         sys.exit()
 
+    # loop through config-OPNsense*.xmlfile.xml
     with open (input_file) as xml_file:
         data_dict = xmltodict.parse(xml_file.read())	
-    # Clean-up the nested array 
+    # clean-up the nested array 
     # and get to the dhcpd value
     long_list = (list(data_dict.values()))
     #print(long_list)
-    # print("\n")
+    #print("\n")
 
-    # get to staticmap
+    # get to static lease map
     short_list = long_list[0]
     #print("The...",short_list)
-    # print("\n\n")
+    #print("\n\n")
 
     
-    # get to staticmap(key): json objects (values)
-    # Need at least one isc dhcpd static leases in the xml    
+    # get to static lease map(key): json objects (values)
+    # need at least one isc dhcpd static leases in the xml    
     inner_list = short_list['dhcpd']['lan']['staticmap']
     #print("\n")
-   
-    # Convert the dictionary to a json string with indentation 
-    json_str = json.dumps(inner_list, indent=4)
-    # print (json_str)
 
-    # Write only a json array to a file. If a single object put it into an array
+    # write only a json array to a file. If a single object put it into an array
     if isinstance(inner_list, dict) and 'mac' in inner_list:
         # make an array to hold one json object
-        temp_list = [inner_list]
+        inner_list = [inner_list]
         print("This is an object\n")
-        # print(temp_list)   
-        json_str = json.dumps(temp_list, indent=4)
+        # this the is json array of one object    
     else:
         # loads an array
         print("This is an array \n")
+        # this the is json array of objects
+    
+    # convert the dictionary to a json string with indentation 
+    json_str = json.dumps(inner_list, indent=4)
+    #print (json_str)
         
-    # Test output
+    # test output
     print("Print json file. \n", json_str)
     
-    # Specify the path to the output file 
+    # specify the path to the output file 
     output_file = os.path.join(path, output)
-    # Save the json representation of the structure 
+    # save the json representation of the structure 
     with open(output_file, 'w') as f: 
         # Write the JSON string to the file 
         f.write(json_str)
         
-    # Print a confirmation message with the output file path 
+    # print a confirmation message with the output file path 
     print("\njson saved to", output_file,"\n")
 
 
-# Merge the original xml with the kea reservation xml
+# merge the original xml with the kea reservation xml
 def merge_files(entry_pathpath, input_file, kea_output_file, merge_file):
     print("Start -> Merge the xml files together")
     #print("doc1_file\n")
@@ -248,13 +252,13 @@ def merge_files(entry_pathpath, input_file, kea_output_file, merge_file):
     root2 = tree2.getroot()
     print(file2_path)
 
-    # Merge file name is doc3_file
+    # merge file name is doc3_file
     #print("doc3_file\n")
     doc3_file = merge_file
     file3_path = os.path.join(entry_path,doc3_file)
     #print(file3_path)
 
-    # Loop and insert each reservation from doc2_file into the doc1_file
+    # loop and insert each reservation from doc2_file into the doc1_file
     for item in root2.findall('reservation'):
         #print("found",item)
     
@@ -264,35 +268,38 @@ def merge_files(entry_pathpath, input_file, kea_output_file, merge_file):
         target.insert(0,item)
     
     # make xml pretty and correct the idention    
-    ET.indent(tree1, space="\t", level=0)
+    ET.indent(tree1, space = "\t", level=0)
 
-    # Write the merged xml file
+    # write the merged xml file
     tree1.write(file3_path, xml_declaration=True, encoding='utf-8', method="xml")
 
     print("\nDone...the merged changes are in ",file3_path,"\n")
 
 
-########################  Main  ########################
+##################################   Main  ##################################
 
 # python script name
 python_script_name = "opnsense_isc_to_kea_reservations.py"
 
-# Change working path to where the *.py is executing from
+# change working path to where the *.py is executing from
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0])) 
 print(python_script_name,"working path: ", script_directory)
 os.chdir(script_directory)
 entry_path = (os.getcwd())
 
-# Read opnsense cong file:  config-OPNsense*.xml
-# Creates a isc-dhcpd static lease json file
+# read opnsense config file: config-OPNsense*.xml
+# create a isc-dhcpd static lease json file
 #
 #===================   [ADD YOUR CONFIG]     ================================
-#   NOTE: Each xml shall have one kea reservation
-# one static release
+#   NOTE: Each xml shall have a isc-dhcpd static lease and a valid kea reservation
+#
+# one static lease
 #input_file  = "config-OPNsense.localdomain-20240218000000.xml"
 #
-# multiple static releases
+# multiple static leases
 input_file  = "config-OPNsense.localdomain-20240218111111.xml"
+#
+# user defined static leases
 #input_file  = "[ADD YOUR CONFIG].xml"
 #
 #===================   [ADD YOUR CONFIG]     ================================
@@ -323,7 +330,7 @@ root1= tree1.getroot()
 json_to_opnsense_xml(entry_path, kea_input_file, kea_output_file)
 
 
-# Merge the original xml with the kea reservationabtion xml
+# merge the original xml with the kea reservation xml
 # "config-OPNsense.localdomain-20240218000000.xml"
 # "config-OPNsense.localdomain-20240218111111.xml"
 orig = input_file
