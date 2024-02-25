@@ -133,7 +133,7 @@ def json_to_opnsense_xml(path,input,output):
     # checking if the xml data is written to file or not
     output_file = os.path.join(path,output)
     read_output_file = open(output_file, 'r')
-    print("\nchecking populated kea file for added reservations: \n")
+    print("\nchecking populated kea file for added reservations:\n")
     print(read_output_file.read())
     read_output_file.close()
 
@@ -180,7 +180,7 @@ def opnsense_xml_to_json(path,input,output):
         print("Starting: ", python_script_name,"\n\n")
     else:
         # terminate if not a config-OPNsense*.xmlfile.xml
-        print("This is NOT a config-OPNsense*.xmlfile. Missing <opnsense> tag \n")
+        print("This is NOT a config-OPNsense*.xmlfile. Missing <opnsense> tag\n")
         print("Terminating: ", python_script_name,"\n\n")
         sys.exit()
 
@@ -205,6 +205,7 @@ def opnsense_xml_to_json(path,input,output):
     #print("\n")
 
     # write only a json array to a file. If a single object put it into an array
+    # is inner_list a type of dictionary?
     if isinstance(inner_list, dict) and 'mac' in inner_list:
         # make an array to hold one json object
         inner_list = [inner_list]
@@ -212,7 +213,7 @@ def opnsense_xml_to_json(path,input,output):
         # this the is json array of one object    
     else:
         # loads an array
-        print("This is an array \n")
+        print("This is an array\n")
         # this the is json array of objects
     
     # convert the dictionary to a json string with indentation 
@@ -220,7 +221,7 @@ def opnsense_xml_to_json(path,input,output):
     #print (json_str)
         
     # test output
-    print("Print json file. \n", json_str)
+    print("Print json file.\n", json_str)
     
     # specify the path to the output file 
     output_file = os.path.join(path, output)
@@ -333,12 +334,12 @@ json_to_opnsense_xml(entry_path, kea_input_file, kea_output_file)
 # merge the original xml with the kea reservation xml
 # "config-OPNsense.localdomain-20240218000000.xml"
 # "config-OPNsense.localdomain-20240218111111.xml"
-orig = input_file
-kea_xml = "opnsense_isc_static_lease_converted_to_kea_reservations.xml"
-merge = "merge.xml"
+orig_xml  = input_file
+kea_xml   = "opnsense_isc_static_lease_converted_to_kea_reservations.xml"
+merge_xml = "merge.xml"
 
 # call procedure
-print("Call merge_files() \n")
-merge_files(entry_path, orig, kea_xml, merge)
+print("Call merge_files()\n")
+merge_files(entry_path, orig_xml, kea_xml, merge_xml)
     
     
