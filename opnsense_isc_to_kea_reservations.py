@@ -54,12 +54,52 @@ def validate_uuid_rgex(uuid):
         print("---> Missing valid inital kea reservation only has the subnet IP:", uuid)
         return False
 
+# added command line argument support
+def command_line_argument():
+    # no arg call the default *.xml
+    if (len(sys.argv) < 2):
+        print("\n")
+        print(python_script_name, "will process the default config-OPNsense*.xml","\n")
+        #input_file  = "config-OPNsense.localdomain-20240218111111.xml"
+        return ("use the orig input_file")
+        
+    elif (len(sys.argv) == 2):
+        # command line one arg calls the *.xml as argument 1
+        for i in range(1, len(sys.argv)):
+            print(f'Argument {i}:', sys.argv[i])
+            
+            file_name_result = re.findall(r"^config-OPNsense\.localdomain-",sys.argv[i])
+            print("Matching file name format: ", file_name_result)
+            
+            # date length is 14
+            date_result = re.findall(r"\w{14}",sys.argv[i])
+            print("Matching date format: ", date_result)
+                   
+            if (re.findall(r"^config-OPNsense\.localdomain-",sys.argv[i])) and (re.findall(r"\w{14}",sys.argv[i])):
+                print("Yes, a regex patern match")
+            else:
+                print("No, a regex patern no match")
+                sys.exit(1)
+            
+            print("\n")
+            print(python_script_name, "will process", sys.argv[i],"\n")
+            return (sys.argv[i])
+    else:
+        # command line for more than one arg 
+        # calls the first *.xml as argument 1 and the second *.xml as argument 2
+        # exits the program
+        print(f"\nCould not parse.")
+        for i in range(1, len(sys.argv)):
+            print(f'Too many rgument {i}:', sys.argv[i])
+        sys.exit(1)
+
+
 # find subnet uuid from a working kea reservation in the input_file
 def find_subnet_uuid(root_name):
     first_time = False
     correct_uuid_length = 36
     for item in root_name.findall('.//subnet'): 
-        # test for missing text <uuid> <\uuid> (testing False condition only)
+        # test for missing text <uuid> </uuid> (testing False condition only)
         if ((has_len(item.text)) == False):
             print("WTF! Missing uuid value [Empty]. \nCheck config-OPNsense.localdomain-2024*.xml\n")
             item.text = "YOU NEED TO CREATE A VALID KEA RESERVATION"
@@ -182,7 +222,7 @@ def opnsense_xml_to_json(path,input,output):
         # terminate if not a config-OPNsense*.xmlfile.xml
         print("This is NOT a config-OPNsense*.xmlfile. Missing <opnsense> tag\n")
         print("Terminating: ", python_script_name,"\n\n")
-        sys.exit()
+        sys.exit(1)
 
     # loop through config-OPNsense*.xmlfile.xml
     with open (input_file) as xml_file:
@@ -205,7 +245,7 @@ def opnsense_xml_to_json(path,input,output):
     #print("\n")
 
     # write only a json array to a file. If a single object put it into an array
-    # is inner_list a type of dictionary?
+    # is the inner_list a type of dictionary?
     if isinstance(inner_list, dict) and 'mac' in inner_list:
         # make an array to hold one json object
         inner_list = [inner_list]
@@ -279,9 +319,11 @@ def merge_files(entry_pathpath, input_file, kea_output_file, merge_file):
 # python script name
 python_script_name = "opnsense_isc_to_kea_reservations.py"
 
+
+
 # change working path to where the *.py is executing from
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0])) 
-print(python_script_name,"working path: ", script_directory)
+print("The working path: ", script_directory,"\n")
 os.chdir(script_directory)
 entry_path = (os.getcwd())
 
@@ -301,7 +343,29 @@ input_file  = "config-OPNsense.localdomain-20240218111111.xml"
 #input_file  = "[ADD YOUR CONFIG].xml"
 #
 #===================   [ADD YOUR CONFIG]     ================================
+
+
+#===================   [COMMAND LINE ARGUMENT SUPPORT] =================
 #
+# Supported:
+# opnsense_isc_to_kea_reservations.py 
+# opnsense_isc_to_kea_reservations.py [config-OPNsense*.xml
+#
+#
+# Not Supported:
+# opnsense_isc_to_kea_reservations.py [config-OPNsense*.xml] [config-OPNsense*.xml] 
+#
+#
+# use new config-OPNsense*.xml argument if passed in 
+# otherwise opnsense_isc_to_kea_reservations.py by itself uses the default input_file
+#
+if not ( command_line_argument() == "use the orig input_file"):
+    input_file = command_line_argument()
+
+
+#===================   [COMMAND LINE ARGUMENT SUPPORT] =================
+
+
 output_file = "opnsense_isc_static_lease.json"
 print("Call opnsense_xml_to_json() \n[Path]                             Input File                  Output file")
 print(entry_path,input_file, output_file,"\n")

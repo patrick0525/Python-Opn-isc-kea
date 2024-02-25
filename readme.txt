@@ -66,4 +66,10 @@ merge.xml is the new config file that constains the new kea rservations
 
 Restore merge.xml and reboot
 
+Update 02252024:
+	Command line argument support and file name regex format matching
+	>>  python3 opnsense_isc_to_kea_reservations.py [config-OPNsense*.xml]
+
+
+
 Done
