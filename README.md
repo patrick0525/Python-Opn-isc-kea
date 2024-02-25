@@ -12,7 +12,6 @@ Requires: System Configuration Restore of merge.xml.
 Updates:
 
 02172024 (inital commit)
-02252024
    - Migrate existing isc static lease data into kea reservations
     - Create a new random \<reservation uuid> per kea reservation
     - Reuses existing kea subnet \<uuid> for all reservations: \<reservation uuid>
