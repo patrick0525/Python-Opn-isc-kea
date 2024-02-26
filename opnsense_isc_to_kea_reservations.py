@@ -63,22 +63,25 @@ def command_line_argument():
         #input_file  = "config-OPNsense.localdomain-20240218111111.xml"
         return ("use the orig input_file")
         
-    elif (len(sys.argv) == 2):
+    elif (len(sys.argv) == 2):   
         # command line one arg calls the *.xml as argument 1
+        pattern = r"config-OPNsense\.localdomain-\d{14}\.xml"
         for i in range(1, len(sys.argv)):
             print(f'Argument {i}:', sys.argv[i])
             
             file_name_result = re.findall(r"^config-OPNsense\.localdomain-",sys.argv[i])
-            print("Matching file name format: ", file_name_result)
+            print("Findall file name format: ", file_name_result)
             
             # date length is 14
-            date_result = re.findall(r"\w{14}",sys.argv[i])
-            print("Matching date format: ", date_result)
-                   
-            if (re.findall(r"^config-OPNsense\.localdomain-",sys.argv[i])) and (re.findall(r"\w{14}",sys.argv[i])):
-                print("Yes, a regex patern match")
+            date_result = re.findall(r"\d{14}",sys.argv[i])
+            print("Findall date format: ", date_result)
+              
+            match = re.match(pattern,sys.argv[i])
+            if bool(match):
+                print("A regex patern match")  
             else:
-                print("No, a regex patern no match")
+                print("A regex patern 'NO' match")
+                print('Exiting')
                 sys.exit(1)
             
             print("\n")
@@ -91,6 +94,7 @@ def command_line_argument():
         print(f"\nCould not parse.")
         for i in range(1, len(sys.argv)):
             print(f'Too many rgument {i}:', sys.argv[i])
+            print('Exiting')
         sys.exit(1)
 
 
